@@ -30,7 +30,7 @@ while not input_is_valid:
 
 if cust_age < 7:
     print('Де твої батьки?')
-elif str(cust_age) == str(cust_age)[-1::-1] and len(str(cust_age)):
+elif str(cust_age) == str(cust_age)[-1::-1] and len(str(cust_age)) == 2:
     print('Як цікаво!')
 elif cust_age < 16:
     print('Це фільм для дорослих!')
