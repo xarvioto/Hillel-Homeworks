@@ -10,8 +10,6 @@
 # P.S. На екран має бути виведено лише одне повідомлення, якщо вік користувача з двох однакових цифр то має бути
 # виведено тільки відповідне повідомлення! Також подумайте над варіантами, коли введені невірні або неадекватні дані.
 
-interesting_ages = {11, 22, 33, 44, 55, 66, 77, 88, 99}
-
 # There is an attempt to filter out all invalid values of age. In an arbitrary manner
 arb_age_up_limit = 150
 arb_age_low_limit = 2
@@ -32,7 +30,7 @@ while not input_is_valid:
 
 if cust_age < 7:
     print('Де твої батьки?')
-elif cust_age in interesting_ages:
+elif str(cust_age) == str(cust_age)[-1::-1] and cust_age < 100:
     print('Як цікаво!')
 elif cust_age < 16:
     print('Це фільм для дорослих!')
