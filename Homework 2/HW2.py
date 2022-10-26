@@ -21,7 +21,7 @@ input_is_valid = False
 while not input_is_valid:
 
     try:
-        cust_age = int(float(input('Будь ласка, введіть Ваш вік:').replace(' ', '').replace(',', '.')))
+        cust_age = int(float(input('Напишіть, скільки Вам років (на приклад 30 чи 2.5):').replace(' ', '').replace(',', '.')))
         assert arb_age_low_limit <= cust_age < arb_age_up_limit
         input_is_valid = True
     except ValueError:
