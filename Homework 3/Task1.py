@@ -16,6 +16,7 @@ for attempt_count in range(1, max_attempts_allowed + 1):
     try:
 
         word = input('Веедіть слово/набір символів, в якому будемо шукати символ:')
+        assert len(word) > 0
         symp_prompt = f'Введіть порядковий номер символу, який треба витягти зі слова (ціле число від 1 до {len(word)}):'
         symb_num = int(input(symp_prompt))
         print('-'* 40)
@@ -26,6 +27,9 @@ for attempt_count in range(1, max_attempts_allowed + 1):
         num_suffix = 'th' if symb_num % 10 not in {1, 2, 3} or symb_num % 100 in {11, 12, 13} else ('st', 'nd', 'rd')[(symb_num - 1) % 10]
         print(f"The {symb_num}{num_suffix} symbol in the word '{word}' is '{word[symb_num - 1]}'")
         break
+
+    except AssertionError:
+        print('Помилка вводу: введіть не порожнє слово/набір символів')
 
     except ValueError:
         print('Помилка типу даних: введіть слово/набір символів, а також ціле число')
