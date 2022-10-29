@@ -16,8 +16,8 @@ for attempt_count in range(1, max_attempts_allowed + 1):
     try:
 
         word = input('Веедіть слово/набір символів, в якому будемо шукати символ:')
-        symb_num = int(input('Введіть порядковий номер символу, який треба витягти зі слова (ціле число, починаючи з '
-                             'одиниці):'))
+        symp_prompt = f'Введіть порядковий номер символу, який треба витягти зі слова (ціле число від 1 до {len(word)}):'
+        symb_num = int(input(symp_prompt))
         print('-'* 40)
 
         # Made this part for rare words with 10 and more chars, while risking violation of YAGNI.
