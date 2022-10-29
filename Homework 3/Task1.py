@@ -6,11 +6,12 @@
 
 max_attempts_allowed = 5
 
-# It may be seen as unlogical here to use 'for' instead of 'while', as well as there are too many ways out of loop, one more than neccessary 
-# Ideally my 'for' shall never reach the end of its last iteration ('max_attempts_allowed + 1' - 1)
-# But i used 'for' on purpose. ReasoningL 'while' is way less efficient in Python (consumes a way more resources and time while doing the same job)
-# at least i've read such a thing:
-# as 'for' logic in Python is written directly using C, but 'while' in Python is written using Python
+# It may be seen as unlogical here to use 'for' instead of 'while', as well as there are too many ways out of loop,
+# one more than necessary
+# Ideally my 'for' shall never reach the end of its last iteration ('max_attempts_allowed +
+# 1' - 1) But i used 'for' on purpose. ReasoningL 'while' is way less efficient in Python (consumes a way more
+# resources and time while doing the same job) at least i've read such a thing: as 'for' logic in Python is written
+# directly using C, but 'while' in Python is written using Python
 for attempt_count in range(1, max_attempts_allowed + 1):
     try:
 
@@ -35,6 +36,10 @@ for attempt_count in range(1, max_attempts_allowed + 1):
     if attempt_count >= max_attempts_allowed:
         print('Спроби закінчились. Запустіть код із самого початку')
         break
+    elif attempt_count == max_attempts_allowed - 1:
+        attempt_count += 1
+        print('-' * 40)
+        print(f'Це Ваша остання спроба, {attempt_count} з {max_attempts_allowed} дозволених')
     else:
         attempt_count += 1
         print('-' * 40)
