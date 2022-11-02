@@ -29,8 +29,9 @@ for key, value in price_dict.items():
     if lower_limit <= value <= upper_limit:
         result_dict.update({key: value})
 
-# The fiddling to make representation fits the example output representation. I mean double quotes.
-# It does not do 'work', but it is an interesting exercise anyways
+# The fiddling to make representation fits the example output representation. I mean double quotes and comma ceparation.
+# It does not do 'work', but it is an interesting exercise anyways.
+# There might be an easier way, but I did not manage to come up with one
 result_list = ['\"' + key + '\"' for key in result_dict.keys()]
 
 print(f'Here is the list of keys having values <={lower_limit} AND >={upper_limit}:\n' +
