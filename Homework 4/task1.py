@@ -7,8 +7,13 @@ vowels_set = {'a', 'e', 'u', 'i', 'o'} # just a mere list of vovels
 # should be a separate function, that may double, tripple, or change the set completely. As we don't use functions
 # yet, i completely separate the code of processing our vowel set to double so the rest of code does not break if
 # vowel set is changed, or processing rule is changed
-target_set = {vowel * 2 for vowel in vowels_set} # condition rule, that may be changed anytime
 
+
+# condition rule, that may be changed anytime
+target_set = set()
+for value_1 in vowels_set:
+    for value_2 in vowels_set:
+        target_set.add(value_1 + value_2)
 
 input_string = ''
 output_list = []
@@ -24,7 +29,7 @@ while not input_string:
 list_of_words = input_string.split(' ')  # Here i suggest that only space separates the words. Otherwise - split('')
 for word in list_of_words:
     for d_vowel in target_set: # naming is still tied to 'double vowels rule', for now, othervise it is harder to comprehend
-        if d_vowel in word:
+        if d_vowel in word.lower():
             output_list.append(word)
 
 print('-' * 40)
