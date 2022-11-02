@@ -31,6 +31,10 @@ for word in list_of_words:
     for d_vowel in target_set: # naming is still tied to 'double vowels rule', for now, othervise it is harder to comprehend
         if d_vowel in word.lower():
             output_list.append(word)
+            break
+
+
+
 
 print('-' * 40)
 print(f'In your string "{input_string}"\n'
