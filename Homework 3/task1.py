@@ -21,9 +21,6 @@ for attempt_count in range(1, max_attempts_allowed + 1):
         symb_num = int(input(symp_prompt))
         print('-'* 40)
 
-        # Made this part for rare words with 10 and more chars, while risking violation of YAGNI.
-        # Tertiary operator it is, because it fits in one row
-        # Just for lulz I made it work for big numbers such as 111 and 1000013 as well
         num_suffix = 'th' if symb_num % 10 not in {1, 2, 3} or symb_num % 100 in {11, 12, 13} else ('st', 'nd', 'rd')[(symb_num - 1) % 10]
         print(f"The {symb_num}{num_suffix} symbol in the word '{word}' is '{word[symb_num - 1]}'")
         break

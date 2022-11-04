@@ -21,21 +21,15 @@ price_dict = {
     "rozetka": 38.003
 }
 
-result_dict = {}
+result_list = []
 
-# is it YAGNI? Here i store both target keys and corresponding values. Because it seems likely for me,
-# that the next step will be something concerned to both stores AND prices
-for key, value in price_dict.items():
-    if lower_limit <= value <= upper_limit:
-        result_dict.update({key: value})
+for store, price in price_dict.items():
+    if lower_limit <= price <= upper_limit:
+        result_list.append(store)
 
-# The fiddling to make representation fits the example output representation. I mean double quotes and comma ceparation.
-# It does not do 'work', but it is an interesting exercise anyways.
-# There might be an easier way, but I did not manage to come up with one
-result_list = ['\"' + key + '\"' for key in result_dict.keys()]
-
-print(f'Here is the list of keys having values <={lower_limit} AND >={upper_limit}:\n' +
-      '----->   ' + ', '.join(result_list) if len(result_list) > 0 else 'None')
+# The fiddling to make representation fits the representation of the example output. I mean stores wrapped in "" .
+print(f'Here is the list of stores having prices <={lower_limit} AND >={upper_limit}:\n' +
+      '----->   ' + ', '.join([f'\"{word}\"' for word in result_list]) if len(result_list) > 0 else 'None')
 
 
 

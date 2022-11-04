@@ -25,7 +25,7 @@ while not input_is_valid:
     except ValueError:
         print('Помилка: Будь ласка, введіть Ваш вік як число')
     except AssertionError:
-        print('Помилка: Будь ласка, введіть Ваш справжній вік')
+        print(f'Помилка: Будь ласка, введіть реалістичний вік')
 
 
 if cust_age < 7:
@@ -34,7 +34,7 @@ elif str(cust_age) == str(cust_age)[-1::-1] and len(str(cust_age)) == 2:
     print('Як цікаво!')
 elif cust_age < 16:
     print('Це фільм для дорослих!')
-elif 65 <= cust_age: # There is <= instead of < completely on purpose. It seems like it makes more sense.
+elif 65 <= cust_age:
     print('Покажіть пенсійне посвідчення!')
 else:
     print("А білетів вже немає!")
