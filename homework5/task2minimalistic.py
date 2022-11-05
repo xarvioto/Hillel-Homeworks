@@ -30,13 +30,11 @@ else:
     weather_in_city_dict = weather_get_response.json()
 
     if weather_in_city_dict['cod'] == 200:
-        shorter_weather_dict = {}
-        shorter_weather_dict.update({'city_name': weather_in_city_dict['name']})
-        shorter_weather_dict.update({'wind_speed': weather_in_city_dict['wind']['speed']})
-        shorter_weather_dict.update({'temperature': weather_in_city_dict['main']['temp']})
 
-        print(f'Weather in {shorter_weather_dict["city_name"]} in dict:')
-        print(f'---> {shorter_weather_dict}')
+        print(f'Weather in ', weather_in_city_dict['name'], ':')
+        print(f'---> wind speed:', weather_in_city_dict['wind']['speed'])
+        print(f'---> temperature:', weather_in_city_dict['main']['temp'])
+
     else:
         print(f'Something went wrong. API returned response: {weather_in_city_dict["cod"]} - '
               f'{weather_in_city_dict["message"]}')
