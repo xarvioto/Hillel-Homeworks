@@ -12,19 +12,20 @@ while True:
 
 list_of_words = input_string.lower().split(' ')
 
-vowel_counter = 0
+
 result_word_counter = 0
 
 for word in list_of_words:
+    vowel_counter = 0
     for char in word:
         if char in vowels_set:
             vowel_counter += 1
-            if vowel_counter >= 2:
-                result_word_counter += 1
-                vowel_counter = 0
-                break
         else:
             vowel_counter = 0
+
+        if vowel_counter >= 2:
+            result_word_counter += 1
+            break
 
 print('-' * 40)
 print(f'In your string "{input_string}"\n'
