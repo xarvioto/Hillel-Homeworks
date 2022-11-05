@@ -31,7 +31,7 @@ else:
 
     if weather_in_city_dict['cod'] == 200:
 
-        print(f'Weather in ', weather_in_city_dict['name'], ':')
+        print(f'Weather in', weather_in_city_dict['name'], ':')
         print(f'---> wind speed:', weather_in_city_dict['wind']['speed'])
         print(f'---> temperature:', weather_in_city_dict['main']['temp'])
 
