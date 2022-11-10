@@ -11,10 +11,11 @@
 # "Тобі ж 5 років! Де твої батьки?"
 # "Вам 81 рік? Покажіть пенсійне посвідчення!"
 # "Незважаючи на те, що вам 42 роки, білетів всеодно нема!"
-# solution - use cashier_at_cinema_algo function, 4 optional key arguments:
+# solution - use cashier_at_cinema_algo function, 5 optional key arguments:
 # cashier_greeting, min_age_allowed=1, max_age_allowed=100,
 # max_attempts_allowed=0 for decorator (which do infinite or finite loops)
-
+# user_input_bypass=0 - make bypass for all the manual number input and validation. Takes parameter value
+# instead of user manual input
 
 def get_number_from_input(prompt_str: str):
     try:
@@ -84,23 +85,27 @@ def cashier_at_cinema_algo(
         cashier_greeting=f'Напишіть, скільки Вам років (на приклад 30 чи 2.5):',
         min_age_allowed: int = 1,
         max_age_allowed: int = 100,
+        user_input_bypass: int = 0
 ):
-    try:
-        buyer_age = get_number_from_input(prompt_str=cashier_greeting)
-
-        assert validate_int_between(
-            number=buyer_age,
-            first_number=min_age_allowed,
-            second_number=max_age_allowed
-        )
-    except ValueError as e:
-        print(f'Error: Should be a number (like 30 or 2.5)')
-        raise e  # Error is treated somewhere, at higher level
-    except AssertionError as e:
-        print(f'Error: Should be a number between {min_age_allowed} and {max_age_allowed}')
-        raise e  # Error is treated somewhere, at higher level
+    if user_input_bypass:
+        return print_cashier_response(user_input_bypass)
     else:
-        return print_cashier_response(buyer_age)
+        try:
+            buyer_age = get_number_from_input(prompt_str=cashier_greeting)
+
+            assert validate_int_between(
+                number=buyer_age,
+                first_number=min_age_allowed,
+                second_number=max_age_allowed
+            )
+        except ValueError as e:
+            print(f'Error: Should be a number (like 30 or 2.5)')
+            raise e  # Error is treated somewhere, at higher level
+        except AssertionError as e:
+            print(f'Error: Should be a number between {min_age_allowed} and {max_age_allowed}')
+            raise e  # Error is treated somewhere, at higher level
+        else:
+            return print_cashier_response(buyer_age)
 
 
 cashier_at_cinema_algo(max_attempts_allowed=3)  # max_attempts_allowed=0 for indefinite input attempts
