@@ -96,7 +96,7 @@ def get_round_resolution_from_ruleset(figure_1, figure_2, ruleset):
          int
     """
     if figure_1 == figure_2:
-        print(f'Resolution: both partisipants showed {figure_1}')
+        print(f'Resolution: both participants showed {figure_1}')
         return 0
     else:
 
@@ -113,6 +113,31 @@ def get_round_resolution_from_ruleset(figure_1, figure_2, ruleset):
                 return 2
             except Exception as e:
                 raise e
+
+
+def battle_log_message(player_name, figure_name, mode):
+    """
+    Generates somewhat random battlelog entries to show Players' deep engagement into battle:
+    accepts player name, figure name and mode
+        parameter mode have 2 valid values (as there are two types of battlelog entries): first_stike, riposte
+    Args:
+        player_name: str
+        figure_name: str
+        mode: str
+
+    Returns:
+        str
+    """
+    frases_dict = {'starters1': ['So', 'Initially', 'At first', 'At the very beginning'],
+                   'midds12': [f'makes {figure_name} move', f'strikes with {figure_name}', f'shows {figure_name}'],
+                   'starters2': ['But suddenly', 'But', 'After that', 'At the end of the day', 'While'],
+                   'enders2': ['right off the bat', 'at the same time', 'like there is no tomorrow']
+                   }
+    if mode == 'first_strike':
+        return f'{choice(frases_dict["starters1"])}, {player_name} {choice(frases_dict["midds12"])}'
+    elif mode == 'riposte':
+        return f'{choice(frases_dict["starters2"])}, {player_name} {choice(frases_dict["midds12"])} ' \
+               f'{choice(frases_dict["enders2"])}'
 
 
 def srpls_the_game_main_function(player_1_name='Monsieur_ROBOT', player_2_name='mr_AI', input_1_func=get_ai_figure_random,
@@ -138,10 +163,10 @@ def srpls_the_game_main_function(player_1_name='Monsieur_ROBOT', player_2_name='
 
     while True:
         figure_of_player_1 = input_1_func(valid_figures_list)
-        print(f'So, {player_1_name} makes {figure_of_player_1} move')
+        print(battle_log_message(player_name=player_1_name, figure_name=figure_of_player_1, mode='first_strike'))
 
         figure_of_player_2 = input_2_func(valid_figures_list)
-        print(f'while {player_2_name} shows {figure_of_player_2} at the same time')
+        print(battle_log_message(player_name=player_2_name, figure_name=figure_of_player_2, mode='riposte'))
 
         try:
             round_resolution_code = get_round_resolution_from_ruleset(figure_1=figure_of_player_1,
