@@ -27,17 +27,16 @@ Contains all possible win condition with the structure:
 def get_player_figure_input(list_of_options):
     """
     Requests user's figure for the current round, validates and returns it:
-    Accepts as arguments a list of possible moves
-    Displays all possible options to user.
-    Allows input as wither number of move, or full name of figure
-    Validates the input
-    Repeats request for input if gets invalid input
-    Returns chosen and validated figure name as str
+    Displays all possible options to user before requesting, and assigns a number to it.
+    Allows user input as either number of move, or full name of figure
+    Shows informative Error instruction for every case of unsuccessful input validation
 
     Args:
-        list_of_options: list
+        list_of_options (list): list of possible moves for users, used in validation of output.
+                                elements of list must be stings
+
     Returns:
-        str
+        str: element from list_of_options chosen by user
     """
 
     num_of_options_int = len(list_of_options)
@@ -67,13 +66,13 @@ def get_player_figure_input(list_of_options):
 
 def get_ai_figure_random(list_of_options):
     """
-    Returns random figure from the list of possible winning moves:
-    Accepts list of possible winning moves and returns one random element of the list
-    Args:
-        list_of_options: list
-    Returns:
-        str
-    """
+     Returns random figure from the list of possible winning moves:
+     Accepts list of possible winning moves and returns one random element of the list
+     Args:
+         list_of_options (list): list of possible moves.
+     Returns:
+         str: random element of list_of_options
+     """
     return choice(list_of_options)
 
 
@@ -83,17 +82,14 @@ def get_round_resolution_from_ruleset(figure_1, figure_2, ruleset):
     Accept two figures, checks if combination exists in ruleset, decides which figure is a winner
     prints intermediary resolution results.
 
-    Valid outcomes:
-        0 - draw, both figures are the same
-        1 - 1st figure 'wins'
-        2 - 2nd figure 'wins'
-
     Args:
-        figure_1 : str
-        figure_2 : str
-        ruleset : dict
+        figure_1 (str): 1st input figure for resolution
+        figure_2 (str): 1nd input figure for resolution
+        ruleset (dict): dict of possible win figures combinations
+                        {winner's figure : {loser's figure :
+                        the way victor's figure overcome loser's figure}} -> Rock crushed Scissors
     Returns:
-         int
+         int: int code of resolution outcome. 0 - draw, 1 - 1st figure 'wins', 2 - 2nd figure 'wins'
     """
     if figure_1 == figure_2:
         print(f'Resolution: both participants showed {figure_1}')
@@ -119,14 +115,17 @@ def battle_log_message(player_name, figure_name, mode):
     """
     Generates somewhat random battlelog entries to show Players' deep engagement into battle:
     accepts player name, figure name and mode
-        parameter mode have 2 valid values (as there are two types of battlelog entries): first_stike, riposte
+    mode allows to present different variants of messages
+
     Args:
-        player_name: str
-        figure_name: str 
-        mode: str
+        player_name (str): Name of player to be displayed in battlelog message
+        figure_name (str): figure name to be displayed in battle-log message
+        mode: variant of battlelog entry. Valid values:
+                first_strike - message for first move among two
+                riposte - message for response move among two
 
     Returns:
-        str
+        str: stylized message of player showing particular figure
     """
     frases_dict = {'starters1': ['So', 'Initially', 'At first', 'At the very beginning'],
                    'midds12': [f'makes {figure_name} move', f'strikes with {figure_name}', f'shows {figure_name}'],
@@ -143,16 +142,14 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
                                  ruleset=win_cond_ruleset_dict):
     """
     Manages the game of "rock scissors paper lizard spock" in general and prints progression messages as game goes.
-    Accepts ruleset and players names, calls input functions for both players, call resolution function and prints
-    results.
-    In case of a Draw - repeats until somebody wins, 'cause it is either human or AI, draw is not an option.
+    In case of a Draw resolution - repeats the rounds until somebody wins
 
     Args:
-        player_1_name: str
-        player_2_name: str
-        ruleset : dict
-    Returns:
-        print? None? In reality it returns print functions with some parameters
+        player_1_name (str): name of 1st game participant - Player
+        player_2_name (str): name of 2nd game participant - AI
+        ruleset (dict): dict of possible win figures combinations
+                        {winner's figure : {loser's figure :
+                        the way victor's figure overcome loser's figure}} -> Rock crushed Scissors
     """
     valid_figures_list = list(ruleset.keys())
 
