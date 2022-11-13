@@ -143,19 +143,25 @@ def srpls_the_game_main_function(player_1_name='Monsieur_ROBOT', player_2_name='
                                  input_2_func=get_ai_figure_random, ruleset=win_cond_ruleset_dict):
     """
     Manages the game of "rock scissors paper lizard spock" in general and prints progression messages as game goes.
-    input_1_func and input_2 _func functions as parameters for getting input figuresa allow different game modes like:
+    input_1_func and input_2 _func functions as parameters for getting input figures. Allow different game modes like:
     Player vs AI, Player vs Player, AI vs AI, cheatmode: AI vs Player
     In case of a Draw resolution - repeats the rounds until somebody wins
 
     Args:
-        player_1_name (str): name of 1st game participant
-        player_2_name (str): name of 2nd game participant
+        player_1_name (str): name of 1st game participant.
+                                Default value - 'Monsieur_ROBOT'
+        player_2_name (str): name of 2nd game participant.
+                                Default value - 'mr_AI'
         input_1_func (func): function of figure input of 1st participant
-                            get_ai_figure_random - for random figure
-                            get_player_figure_input - for user input
+                                Options:
+                                    get_ai_figure_random - for random figure
+                                    get_player_figure_input - for user input
+                                        Default value - get_ai_figure_random
         input_2_func (func): function of figure input of 1st participant
-                            get_ai_figure_random - for random figure
-                            get_player_figure_input - for user input
+                                Options:
+                                    get_ai_figure_random - for random figure
+                                    get_player_figure_input - for user input
+                                         Default value - get_ai_figure_random
         ruleset (dict): dict of possible win figures combinations
                         {winner's figure : {loser's figure :
                         the way victor's figure overcome loser's figure}} -> Rock crushed Scissors

@@ -146,7 +146,9 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
 
     Args:
         player_1_name (str): name of 1st game participant - Player
+                                Default value - 'Player_1'
         player_2_name (str): name of 2nd game participant - AI
+                                Default value - 'mr_AI'
         ruleset (dict): dict of possible win figures combinations
                         {winner's figure : {loser's figure :
                         the way victor's figure overcome loser's figure}} -> Rock crushed Scissors
