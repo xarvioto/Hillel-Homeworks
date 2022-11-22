@@ -5,11 +5,11 @@
 from library import srpls_the_game_main_function
 from library import selection_menu_input
 from library import show_me_statistics
-
+from library import exiting_procedure
 
 main_menu_functions_dict = {'Play the game': srpls_the_game_main_function,
                             'Show accumulative statistics till now': show_me_statistics,
-                            'Exit the game': exit
+                            'Exit the game': exiting_procedure
                             }
 """
 Dict of functions to execute after correspondent main menu element is chosen

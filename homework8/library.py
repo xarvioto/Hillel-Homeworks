@@ -271,19 +271,24 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
 
             current_game_statistics_dict['rounds_played'] += 1
             print('-' * 40)
-            next_round_decision = selection_menu_input('Another round?:', ['Yes', 'No and Exit'])
 
-            if next_round_decision == 'Yes':
+            next_round_decision_list = ['Yes, new round',
+                                       'No, go back to main menu',
+                                       'Exit the game completely']
+
+            next_round_decision = selection_menu_input('Another round?:', next_round_decision_list)
+
+            print('-' * 40)
+            if next_round_decision == next_round_decision_list[0]:
                 round_count += 1
-                print('-' * 40)
                 print(f'Let\'s do another round then')
-            elif next_round_decision == 'No and Exit':
-                print('-' * 40)
-                print(f'Exiting. Please check game log in {log_file_name} and player statistics in {statistics_file_name}')
-                print('Thanks for your time. Have a nice day!')
-                log_file.write(f'{datetime.now()} Exit: User decided to not proceed with the game')
+            elif next_round_decision in next_round_decision_list[1:2]:
+                log_file.write(f'{datetime.now()} Return to main menu')
                 update_statistics(file_name=statistics_file_name, current_game_session_dict=current_game_statistics_dict)
-                exit()
+                if next_round_decision == next_round_decision_list[2]:
+                    exiting_procedure()
+                else:
+                    return
             else:
                 return print('Error: Something unpredictable happened')
 
@@ -378,5 +383,13 @@ def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dic
                 print(f'{figure} played {statistics[figure]} times')
 
 
+def exiting_procedure(log_file_name='gamelog.txt', statistics_file_name='statistics.json'):
+    with open(log_file_name, 'at') as log_file:
+        log_file.write(f'{datetime.now()} Exiting the game')
+    print('-' * 40)
+    print(f'Exiting. You can check game log in {log_file_name} '
+          f'and player statistics in {statistics_file_name}')
+    print('Thanks for your time. Have a nice day!')
+    exit()
 
 
