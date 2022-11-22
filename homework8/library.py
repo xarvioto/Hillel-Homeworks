@@ -226,12 +226,11 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
     current_game_statistics_dict.update({key: 0 for key in valid_figures_list})
 
     with open(log_file_name, 'wt') as log_file:
-        log_file.write(f'{datetime.now()} Log of the last game of \'rock scissors paper lizard spock\'. Game between '
-                       f'player {player_1_name} and AI {player_2_name}\n')
+        log_file.write(f'{datetime.now()} New game session of \'rock scissors paper lizard spock\' started.\n')
 
         round_count = 1
 
-        while True: # Loop for single round of the game
+        while True:
 
             # figure_of_player_1 = get_player_figure_input(valid_figures_list) # an alternative realizations
             figure_of_player_1 = selection_menu_input(f'Please, choose your figure:',valid_figures_list) # an alt realizations
@@ -282,15 +281,16 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
             if next_round_decision == next_round_decision_list[0]:
                 round_count += 1
                 print(f'Let\'s do another round then')
-            elif next_round_decision in next_round_decision_list[1:2]:
-                log_file.write(f'{datetime.now()} Return to main menu')
+            elif next_round_decision in next_round_decision_list[1:]:
+                log_file.write(f'{datetime.now()} Return to main menu\n')
                 update_statistics(file_name=statistics_file_name, current_game_session_dict=current_game_statistics_dict)
                 if next_round_decision == next_round_decision_list[2]:
+                    log_file.close()
                     exiting_procedure()
                 else:
                     return
             else:
-                return print('Error: Something unpredictable happened')
+                return print('Error: Something unpredictable happened. Choose once again')
 
 
 def selection_menu_input(menu_title, menu_options_list):
@@ -384,12 +384,17 @@ def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dic
 
 
 def exiting_procedure(log_file_name='gamelog.txt', statistics_file_name='statistics.json'):
+    """
+    Args:
+        log_file_name (str): name of file where log shall be stored
+        statistics_file_name: name of file where accumulative statistics shall be stored
+    """
     with open(log_file_name, 'at') as log_file:
         log_file.write(f'{datetime.now()} Exiting the game')
-    print('-' * 40)
-    print(f'Exiting. You can check game log in {log_file_name} '
-          f'and player statistics in {statistics_file_name}')
-    print('Thanks for your time. Have a nice day!')
-    exit()
+        print('-' * 40)
+        print(f'Exiting. You can check game log in {log_file_name} '
+              f'and player statistics in {statistics_file_name}')
+        print('Thanks for your time. Have a nice day!')
+        exit()
 
 

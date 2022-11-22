@@ -15,13 +15,24 @@ main_menu_functions_dict = {'Play the game': srpls_the_game_main_function,
 Dict of functions to execute after correspondent main menu element is chosen
 """
 
-
 if __name__ == '__main__':
     while True:
         menu_point_selected = selection_menu_input('Main menu for \'rock scissors paper lizard spock\' game',
                                                    list(main_menu_functions_dict.keys()))
         function_to_execute = main_menu_functions_dict[menu_point_selected]
         function_to_execute()
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
