@@ -21,4 +21,3 @@ if __name__ == '__main__':
                                                    list(main_menu_functions_dict.keys()))
         function_to_execute = main_menu_functions_dict[menu_point_selected]
         function_to_execute()
-
