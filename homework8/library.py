@@ -296,8 +296,7 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
 
 def selection_menu_input(menu_title, menu_options_list):
     """
-    Function allows to choose one of the options with keyboard (Shift for previous selection,
-    Ctrl for next selection, Alt for confirmation of current selection).
+    Function allows to choose one of the options with keyboard (Up, Down, and Enter for confirmation of current selection).
     Prints title from menu_title and list of options from the menu_options_list arguments. User chooses one of the
     options with Shift and Ctrl buttons and confirms selection with Alt button
 
