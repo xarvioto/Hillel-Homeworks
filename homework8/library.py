@@ -71,6 +71,7 @@ def get_ai_figure_random(list_of_options):
     """
      Returns random figure from the list of possible winning moves:
      Accepts list of possible winning moves and returns one random element of the list
+
      Args:
          list_of_options (list): list of possible moves.
      Returns:
@@ -205,7 +206,6 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
     """
     Manages the game of "rock scissors paper lizard spock" in general and prints progression messages as game goes.
 
-
     Args:
         player_1_name (str): name of 1st game participant - Player
                                 Default value - 'Player_1'
@@ -225,7 +225,8 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
 
     current_game_statistics_dict.update({key: 0 for key in valid_figures_list})
 
-    with open(log_file_name, 'wt') as log_file:
+
+    with open(log_file_name, 'at') as log_file:
         log_file.write(f'{datetime.now()} New game session of \'rock scissors paper lizard spock\' started.\n')
 
         round_count = 1
@@ -356,8 +357,6 @@ def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dic
     Args:
         file_name (str): Name of file where statistics is and shall be stored
         ruleset (dict): ruleset of a game as a dict
-
-
     """
     statistics = get_statistics_from_json_file(file_name)
     valid_list_of_moves = list(ruleset.keys())
@@ -385,12 +384,15 @@ def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dic
 
 def exiting_procedure(log_file_name='gamelog.txt', statistics_file_name='statistics.json'):
     """
+    Writes exiting entry in logfile and terminates the program
+    Shows reminder that logfile and statistics could be read from the files
+
     Args:
         log_file_name (str): name of file where log shall be stored
         statistics_file_name: name of file where accumulative statistics shall be stored
     """
     with open(log_file_name, 'at') as log_file:
-        log_file.write(f'{datetime.now()} Exiting the game')
+        log_file.write(f'{datetime.now()} Exiting the game\n')
         print('-' * 40)
         print(f'Exiting. You can check game log in {log_file_name} '
               f'and player statistics in {statistics_file_name}')
