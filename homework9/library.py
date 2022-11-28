@@ -25,6 +25,29 @@ Contains all possible win condition with the structure:
 """
 
 
+def time_took_str(seconds):
+    """
+    Converts seconds into str representation of time it took to perform the function
+    Args:
+        seconds (int, float): amount of time in seconds
+
+    Returns:
+        str: string representation of time in hours, minutes and seconds (rounded to 4th decimal)
+    """
+    if not seconds:
+        return f'no time at all, like --> 0 <-- seconds'
+
+    hours = int(seconds // 3600)
+    minutes = int((seconds % 3600) // 60)
+    seconds = round(seconds % 60, 4)
+
+    time_string = (f'{hours} hour{"s" if hours > 1 else ""} ' if hours else "") + \
+                  (f'{minutes} minute{"s" if minutes > 1 else ""} ' if minutes else "") + \
+                  (f'{seconds} second{"s" if seconds != 1 else ""}' if seconds else "")
+
+    return time_string.strip(' ')
+
+
 def decor_time_it_and_write_into_file(file_name):
     """
     Writes into log file:
@@ -41,19 +64,17 @@ def decor_time_it_and_write_into_file(file_name):
             end_time = time_time()
 
             time_diff = end_time - start_time
-
+            print(f'The last game round took --> {time_took_str(time_diff)} <--')
             with open(file_name, 'at') as file:
 
-                file.write(f'func: {func.__name__}, '
-                           f'with Args {args}, '
-                           f'Kwargs: {kwargs}, '
+                file.write(f'func: {func.__name__}, started {datetime.now()}, '
                            f'execution took {time_diff} seconds\n')
+
             return function_result
 
         return wrapper
 
     return inner_function
-
 
 
 def get_player_figure_input(list_of_options):
@@ -174,7 +195,6 @@ def battle_log_message(player_name, figure_name, mode):
                f'{choice(frases_dict["enders2"])}'
 
 
-@decor_time_it_and_write_into_file('timelog.txt')
 def get_statistics_from_json_file(file_name):
     """
     Transforms json file to dict. If there is no json file, or no dict in it - returns empty dict
@@ -193,7 +213,6 @@ def get_statistics_from_json_file(file_name):
         return {}
 
 
-@decor_time_it_and_write_into_file('timelog.txt')
 def save_statistics_to_json_file(file_name, dict_to_save):
     """
     Transforms dict to json file, so game statistics stores and accumulates between game session
@@ -210,7 +229,6 @@ def save_statistics_to_json_file(file_name, dict_to_save):
         file.write(json_to_save)
 
 
-@decor_time_it_and_write_into_file('timelog.txt')
 def update_statistics(file_name, current_game_session_dict):
     """
     Updates (creates new file if neccessary) file_name statistics file with current game session results.
@@ -260,7 +278,6 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
 
     current_game_statistics_dict.update({key: 0 for key in valid_figures_list})
 
-
     with open(log_file_name, 'at') as log_file:
         log_file.write(f'{datetime.now()} New game session of \'rock scissors paper lizard spock\' started.\n')
 
@@ -308,8 +325,8 @@ def srpls_the_game_main_function(player_1_name='Player_1', player_2_name='mr_AI'
             print('-' * 40)
 
             next_round_decision_list = ['Yes, new round',
-                                       'No, go back to main menu',
-                                       'Exit the game completely']
+                                        'No, go back to main menu',
+                                        'Exit the game completely']
 
             next_round_decision = selection_menu_input('Another round?:', next_round_decision_list)
 
@@ -383,7 +400,6 @@ def selection_menu_input(menu_title, menu_options_list):
     return enum_list[current_selection - 1][1]
 
 
-@decor_time_it_and_write_into_file('timelog.txt')
 def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dict):
     """
     Prints formatted text with statistics got from file_name file.
@@ -417,7 +433,6 @@ def show_me_statistics(file_name='statistics.json', ruleset=win_cond_ruleset_dic
                 print(f'{figure} played {statistics[figure]} times')
 
 
-@decor_time_it_and_write_into_file('timelog.txt')
 def exiting_procedure(log_file_name='gamelog.txt', statistics_file_name='statistics.json'):
     """
     Writes exiting entry in logfile and terminates the program
