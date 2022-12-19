@@ -138,7 +138,7 @@ class GamesSettingsSingleton:
     screen_views: object = None
 
     statistics_file_name = 'statistics.txt'
-    settings_file_name = 'settings.txt'
+    # settings_file_name = 'settings.txt'
     rules_set_file_name = 'rules_set.txt'
 
     def __new__(cls):
