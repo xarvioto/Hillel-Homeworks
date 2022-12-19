@@ -1,3 +1,7 @@
+# Візьміть свою гру з HW8 і перепишіть ії в обʼєктному стилі. Зробіть максимум взаємодії (як явної так і неявної) на
+# рівні обʼєктів. Рекомендую подумати над такими класами як Player, GameFigure, Game. Памʼятайте про чистоту і
+# простоту коду (DRY, KISS), коментарі та докстрінги.
+
 from library import GamesSettingsSingleton
 from library import GameScreens
 from library import HumanPlayer
