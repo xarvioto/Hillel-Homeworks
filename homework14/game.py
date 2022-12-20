@@ -10,10 +10,14 @@ from library import GameSession
 from json import load as json_load
 
 sett = GamesSettingsSingleton()
-screens = GameScreens(sett)
-ai = AiPlayer(sett)
-human = HumanPlayer(sett)
-game_session = GameSession(sett)
+
+# all four have single parameter: GamesSettingsSingleton object. You can pass sett instead - it will have no difference
+# unless you pass other instance with similar interface but different implementation
+# all of the following expect some kind of object that will grant references to all the other objects
+screens = GameScreens()
+ai = AiPlayer()
+human = HumanPlayer()
+game_session = GameSession()
 
 
 def play_the_game():
@@ -39,3 +43,9 @@ def show_statistics():
 if __name__ == "__main__":
     play_the_game()
     show_statistics()
+
+
+
+
+
+
