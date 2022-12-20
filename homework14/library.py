@@ -17,7 +17,7 @@ win_cond_ruleset_dict = {'rock': {'scissors': 'crushes', 'lizard': 'crushes'},
 class FigureComparisonResult:
     """
     Instance contain one possible outcome for figures comparison
-    Support inversion of resolution by using minus win -> lose, lose -> win, draw -> draw
+    Support inversion of resolution by using minus: -win -> lose, -lose -> win, -draw -> draw
     """
     resolution: str = ''
     win_word: str = ''
@@ -30,6 +30,10 @@ class FigureComparisonResult:
         return str(self.resolution)
 
     def __neg__(self):
+        """
+        Returns:
+            (str): reflected str representation of the round outcome
+        """
         if self.resolution == 'win':
             return 'lose'
         elif self.resolution == 'lose':
@@ -54,7 +58,7 @@ class FigureMove:
     def __init__(self, first_move: str, init_rules_set: dict[str, dict[str, str]]):
         """
         Assigns first_move as an internal name of the figure
-        Analises init_rules_set, creates instance of FigureComparisonResult for each possible combination of this figure
+        Analyses init_rules_set, creates instance of FigureComparisonResult for each possible combination of this figure
         with each possible winning figure in init_rules_set. Creates all: winning, loosing, drawing outcomes
         (init_rules_set ought to contain only winning combination)
         Checks for conflicting winning combinations in init_rules_set
@@ -65,10 +69,16 @@ class FigureMove:
         self.move_name = first_move
 
         for other_move in init_rules_set.keys():
+
+            # Finds all the winning combinations
             if other_move in init_rules_set[first_move]:
+
+                # checks that there is not conflicts like move_1 wins move_2 and move_2 wins move_1 at the same time
                 if first_move in init_rules_set[other_move]:
                     raise ValueError(f'Error: There is a conflict in ruleset. Combination of {first_move} and \
                                     {other_move} has conflicting winning conditions')
+
+                # Created FigureComparisonResult object for every valid winning outcome
                 else:
                     if init_rules_set[first_move][other_move]:
                         win_word = init_rules_set[first_move][other_move]
@@ -76,6 +86,7 @@ class FigureMove:
                         win_word = 'overcomes'
                     self.__dict__[other_move] = FigureComparisonResult(resolution='win', win_word=win_word)
 
+            # create FigureComparisonResult object for all not winning moves
             else:
                 if first_move in init_rules_set[other_move]:
                     self.__dict__[other_move] = FigureComparisonResult(resolution='lose', win_word='loses to')
@@ -93,7 +104,7 @@ class FigureMove:
 
 class GameRulesSet:
     """
-    Contains OOP representation of all possible wiining, loosing and drawing combinations
+    Contains OOP representation of all possible winning, loosing and drawing combinations
     Creates a tree of FigureMove objects basing on the logic of full_rules_set dict
     Raises error if full_rules_set is empty, or contains moves without any possible winning combination
     """
@@ -102,13 +113,18 @@ class GameRulesSet:
 
     def __init__(self, full_rules_set: dict[str, dict[str, str]]):
         self.init_rule_set = full_rules_set
+
         if not full_rules_set:
             raise ValueError('Error: rules_set must not be empty')
-        for first_move in self.init_rule_set.keys():
+
+        for first_move in self.init_rule_set.keys():  # Creates FigureMove object for every valid winning move
+
+            # Insures that there is no loosing move without any chance to win - it is considered as faulty ruleset
             for other_move in self.init_rule_set[first_move].keys():
                 if other_move not in self.init_rule_set.keys():
                     raise ValueError(f'Error: rule set contains loosing move {other_move} which does '
                                      f'not exist in winning moves of a ruleset')
+
             self.__dict__[first_move] = FigureMove(first_move=first_move, init_rules_set=self.init_rule_set)
             self.figure_moves_list.append(self.__dict__[first_move])
 
@@ -179,6 +195,14 @@ class PlayerABC(ABC):
     def ask_input_name(self):
         pass
 
+    @property
+    def player_name(self):
+        pass
+
+    @player_name.setter
+    def player_name(self, value):
+        pass
+
 
 class GameScreens:
     """
@@ -190,11 +214,13 @@ class GameScreens:
 
     def __init__(self, game_settings_object: GamesSettingsSingleton = GamesSettingsSingleton()):
         self.game_settings = game_settings_object
-        game_settings_object.screen_views = self
+
+        game_settings_object.screen_views = self  # gives setting object a link to the created instance
 
     def selection_menu_view(self, menu_title: str, menu_options: list[str | object]):
         """
         Shows the list of options, expects user to choose one from the list by using keys defined for UP, DOWN and ENTER
+        Grabs keys designation (for move UP, DOWN, ENTER) from GamesSettingsSingleton object via link in self
         Args:
             menu_title: The title shown while selecting options
             menu_options (tuple, list): tuple of possible options to choose and later return
@@ -203,20 +229,20 @@ class GameScreens:
             str: one of elements from the menu_options
         """
         current_selection = 1
-        list_length = len(menu_options)
-        enum_tuple = list(enumerate(menu_options, start=1))
+        menu_length = len(menu_options)
+        enumerated_menu = list(enumerate(menu_options, start=1))
 
         up_button = self.game_settings.choose_previous_button
         down_button = self.game_settings.choose_next_button
         confirm_button = self.game_settings.confirm_selection_button
 
-        def show_the_options_with_selection(prompt_to_show, enum_tuple_of_options):
+        def show_the_options_with_selection(prompt_to_show, enumerated_list_of_options):
             nonlocal current_selection
             print('\n')
             print(prompt_to_show)
             print(f'Please use -> {up_button.upper()} <-, -> {down_button.upper()} <- to go up and down, '
                   f'and -> {confirm_button.upper()} <- for confirmation of your choice')
-            for num, element in enum_tuple_of_options:
+            for num, element in enumerated_list_of_options:
                 print(f'{"-->" if current_selection == num else "   "} '
                       f'{num}. {str(element)} '
                       f'{"<--" if current_selection == num else "   "}')
@@ -226,16 +252,16 @@ class GameScreens:
             if current_selection == 1:
                 return
             current_selection -= 1
-            show_the_options_with_selection(menu_title, enum_tuple)
+            show_the_options_with_selection(menu_title, enumerated_menu)
 
         def move_one_menu_item_down():
             nonlocal current_selection
-            if current_selection == list_length:
+            if current_selection == menu_length:
                 return
             current_selection += 1
-            show_the_options_with_selection(menu_title, enum_tuple)
+            show_the_options_with_selection(menu_title, enumerated_menu)
 
-        show_the_options_with_selection(menu_title, enum_tuple)
+        show_the_options_with_selection(menu_title, enumerated_menu)
         add_hotkey(up_button, move_one_menu_item_up)
         add_hotkey(down_button, move_one_menu_item_down)
 
@@ -244,19 +270,18 @@ class GameScreens:
         remove_hotkey(up_button)
         remove_hotkey(down_button)
 
-        return enum_tuple[current_selection - 1][1]
+        return enumerated_menu[current_selection - 1][1]
 
     @staticmethod
-    def moves_comparison_battle_string(figure, player, mode):
+    def moves_comparison_battle_string(figure: FigureMove, player: PlayerABC, mode: str):
         """
-        Generates somewhat random battlelog entries to show Players' deep engagement into battle:
+        Prints string showing Players' actions in battle:
 
         Args:
-            figure (FigureMove): FigureMove object
-            player (PlayerABC): Player object
+            figure (FigureMove): figure move to be reflected in the text
+            player (PlayerABC): maker of the figure move
             mode (str): there are two modes 'first_strike' and 'riposte'
-        Returns:
-            str: stylized message of player showing particular figure
+
         """
         fig = str(figure).capitalize()
         name = player.player_name
@@ -275,7 +300,16 @@ class GameScreens:
 
     def resolution_string(self, figure_1: FigureMove, figure_2: FigureMove,
                           figure_comparison_result_object: FigureComparisonResult):
+        """
+        Prints strings of round outcome:
 
+        Args:
+            figure_1 (FigureMove): first figure to compare
+            figure_2 (FigureMove): second figure to compare
+            figure_comparison_result_object (FigureComparisonResult): result of comparison
+        Returns:
+            str:  message of player showing particular figure
+        """
         if figure_comparison_result_object.resolution == 'draw':
             print(f'{figure_1} vs {figure_2}')
             print('Round result: a Draw')
@@ -295,8 +329,9 @@ class GameScreens:
 class HumanPlayer(PlayerABC):
     """
     Contains Human player related stuff.
-    Stores player name (gets from and sets to) in GamesSettingsSingleton
+    Stores player name in game_settings_object, getter and setter refer to it
     Grabs access to GameScreens through GamesSettingsSingleton
+    contains generate figure property, that dictates how player chooses a figure to play
     """
     def __init__(self, game_settings_object: GamesSettingsSingleton = GamesSettingsSingleton()):
         self.game_settings = game_settings_object
@@ -325,7 +360,7 @@ class HumanPlayer(PlayerABC):
         """
         Asks user to choose one of figure moves
         Returns:
-            (FigureMove): Object of FigureMove class, that contains links to outcomes of comparison
+            (FigureMove): Object of FigureMove class, that contains links to outcomes of figures comparison
 
         """
         selection_menu = self.screen_views.selection_menu_view
@@ -338,6 +373,8 @@ class HumanPlayer(PlayerABC):
 class AiPlayer(PlayerABC):
     """
     Contains AI player related stuff.
+    Stores player name in game_settings_object, getter and setter refer to it
+    contains generate figure property, that dictates how player chooses a figure to play
     """
     def __init__(self, game_settings_object: GamesSettingsSingleton = GamesSettingsSingleton()):
         self.game_settings = game_settings_object
@@ -347,7 +384,7 @@ class AiPlayer(PlayerABC):
         if not self.game_settings.ai_player_name:
             self.ask_input_name()
 
-        game_settings_object.ai_player = self
+        game_settings_object.ai_player = self  # gives setting object a link to the created instance
 
     @property
     def player_name(self):
@@ -378,8 +415,8 @@ class GameSession:
     Controls current game session (which could consist of many game rounds).
     Updates statistics into a file if instance of class is run in context manager.
     """
-    game_settings = None
-    screen_views = None
+    game_settings: object
+    screen_views: object
     player_1_name: str = ''
     player_2_name: str = ''
     session_statistics_dict: dict = {}
@@ -417,26 +454,29 @@ class GameSession:
         figure_2 = self.player_2.generate_figure
         self.screen_views.moves_comparison_battle_string(figure=figure_2, player=self.player_2, mode='riposte')
 
-        round_resolution_object = figure_1 + figure_2
-        self.screen_views.resolution_string(figure_1, figure_2, round_resolution_object)
+        round_resolution = figure_1 + figure_2
+        self.screen_views.resolution_string(figure_1=figure_1, figure_2=figure_2,
+                                            figure_comparison_result_object=round_resolution)
 
-        self.accumulate_session_statistics(figure_1, figure_2, round_resolution_object)
+        self.accumulate_session_statistics(figure_1=figure_1, figure_2=figure_2,
+                                           figure_comparison_result_object=round_resolution)
         return 'Round ends'
 
-    def accumulate_session_statistics(self, figure_1: FigureMove, figure_2: FigureMove, round_resolution_object):
+    def accumulate_session_statistics(self, figure_1: FigureMove, figure_2: FigureMove,
+                                      figure_comparison_result_object: FigureComparisonResult):
         """
         Gets played figures objects as well as existent round resolution objects.
         Accumulates statistics of current game session by updating statistics dict at self
         Args:
             figure_1 (FigureMove): figure played by player 1
             figure_2 (FigureMove): figure played by player 2
-            round_resolution_object (FigureComparisonResult): round resolution b
+            figure_comparison_result_object (FigureComparisonResult): contains outcome of figures comparison
 
         """
-        # player 1
+        # shortening names of values
         fig_1 = str(figure_1)
         fig_2 = str(figure_2)
-        resol = round_resolution_object
+        resol = figure_comparison_result_object
         player_1_name = self.player_1_name
         player_2_name = self.player_2_name
         stat_dict = self.session_statistics_dict
@@ -479,24 +519,25 @@ class GameSession:
             old_dict_from_file = {}
 
         current_dict = self.session_statistics_dict
-        upd_stat = old_dict_from_file
-        if upd_stat:
-            for name_key in set(upd_stat) | set(current_dict):
-                if not upd_stat.get(name_key, 0):
-                    upd_stat.update({name_key: {}})
+        updated_dict = {}
+        if old_dict_from_file:
+            for name_key in set(old_dict_from_file) | set(current_dict):  # merges name keys
+                updated_dict.update({name_key: {}})  # creates all the name keys in output dict
+                if not old_dict_from_file.get(name_key, 0):
+                    old_dict_from_file.update({name_key: {}})  # add key to prevent KeyErrors in the merging process
                 if not current_dict.get(name_key, 0):
-                    current_dict.update({name_key: {}})
+                    current_dict.update({name_key: {}})  # add key to prevent KeyErrors in the merging process
 
-                for stat_item_key in set(upd_stat.get(name_key, {})) | set(current_dict.get(name_key, {})):
-
-                    upd_value = upd_stat[name_key].get(stat_item_key, 0)
+                for stat_item_key in set(old_dict_from_file.get(name_key, {})) | set(current_dict.get(name_key, {})):
+                    #  adds up statistics values one item at a time
+                    old_value = old_dict_from_file[name_key].get(stat_item_key, 0)
                     curr_value = current_dict[name_key].get(stat_item_key, 0)
 
-                    upd_stat[name_key].update({stat_item_key: upd_value + curr_value})
+                    updated_dict[name_key].update({stat_item_key: old_value + curr_value})
 
         else:
-            upd_stat = self.session_statistics_dict
+            updated_dict = self.session_statistics_dict
 
         with open(self.statistics_file_name, 'wt') as file:
-            json_to_save = json_dumps(upd_stat)
+            json_to_save = json_dumps(updated_dict)
             file.write(json_to_save)

@@ -19,6 +19,7 @@ ai = AiPlayer()
 human = HumanPlayer()
 game_session = GameSession()
 
+
 def play_the_game():
     """
     Start a session of the game
@@ -42,11 +43,3 @@ def show_statistics():
 if __name__ == "__main__":
     play_the_game()
     show_statistics()
-
-
-
-
-
-
-
-
