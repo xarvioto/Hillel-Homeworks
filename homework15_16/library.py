@@ -64,7 +64,7 @@ class RequestNBURates:
 
 class WriterExchangeRatesNbuIntoFile:
     """
-    Calls request to NBU API, checks that json response has expected keys for valid interpratation.
+    Calls request to NBU API, checks that json response has expected keys for valid interpretation.
     Writes content of successful and non-empty json responds into file named dd_mm_yyyy.txt
 
     In order to allow multiple requests in a row (valid and not valid, successful and not successful):
@@ -111,7 +111,7 @@ class WriterExchangeRatesNbuIntoFile:
             except ValueError:
                 raise ValueError(f'Error: \'{date_value}\' could have not be decoded as a real date. Attempt aborted. '
                                  f'Please provide valid date in \'{self.date_key_format}\' format as a string, '
-                                 f'aka \'{datetime.datetime.now().strftime("%Y%m%d")}\'')
+                                 f'aka \'{datetime.datetime.now().strftime(self.date_key_format)}\'')
 
     @property
     def date_in_work_as_str_key(self):
