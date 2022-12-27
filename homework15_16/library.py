@@ -97,7 +97,7 @@ class WriterExchangeRatesNbuIntoFile:
     @date_in_work.setter
     def date_in_work(self, date_value: str | datetime.date):
         """
-        Set _date_in_work as dateime objects.
+        Set _date_in_work as datetime objects.
         Tries to convert from string into a datetime object if string passed to a setter
         Args:
             date_value (str | datetime.date):
